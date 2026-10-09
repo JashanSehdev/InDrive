@@ -1,0 +1,28 @@
+
+.container {
+    padding: 1rem;
+    max-width: 300px;
+}
+
+.image {
+    height : 8rem !important;
+    width  : 100% !important;
+    object-fit: cover;
+}
+
+.rating{
+    padding :0.5rem;
+    background-color: #2E9D46 !important;
+    color: white !important;
+}
+
+.image_container{
+    margin-bottom : 0.5rem;
+}
+
+.driverDetails{
+    margin-bottom: 1rem !important;
+}
+.bookButton{
+    margin-top: 1rem !important;
+}
