@@ -14,7 +14,7 @@ import {
 import { UsersService } from './users.service.js';
 import { CreateUserDto } from './dto/create-user.dto.js';
 import { UpdateUserDto } from './dto/update-user.dto.js';
-import type { Response } from 'express';
+import type { Request, Response } from 'express';
 import { LoginUserDto } from './dto/login-user.dto.js';
 
 @Controller('auth')
@@ -58,6 +58,11 @@ export class UsersController {
   logout(@Res({ passthrough: true }) res: Response){
     res.clearCookie('access_token');
     return 'logout successful'
+  }
+
+  @Get('me')
+  async getMe(@Req() req : Request & {user : any}) {
+    return await this.usersService.findOne(req.user.id)
   }
 
   @Get()

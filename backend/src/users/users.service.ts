@@ -38,7 +38,7 @@ export class UsersService {
 
     const result = await this.userRepository.save(user);
 
-    const payload = { id: result.id, email: result.email};
+    const payload = { id: result.id, email: result.email, role : result.role};
 
     const token = this.jwtService.sign(payload);
 
@@ -69,6 +69,7 @@ export class UsersService {
     const token = this.jwtService.sign({
       id: existingUser.id,
       email: existingUser.email,
+      role : existingUser.role
     });
     return token;
   }
@@ -77,8 +78,18 @@ export class UsersService {
     return `This action returns all users`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number) {
+    return await this.userRepository.findOne({
+      where : {
+        id
+      },
+      select : {
+        role : true,
+        username : true,
+        id : true,
+        email :true
+      }
+    })
   }
 
   async findOneByEmail(email: string) {

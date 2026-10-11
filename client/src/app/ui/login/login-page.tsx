@@ -5,13 +5,16 @@ import Link from "next/link";
 import { LoginInputs, loginSchema } from "./login.type";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAppDispatch } from "@/features/store";
+import { useAppDispatch, useAppSelector } from "@/features/store";
 import { loginUserAsync } from "@/features/auth/manage-auth/auth.action";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
   const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.auth.user)
+  const router = useRouter()
   const {
     register,
     handleSubmit,
@@ -23,7 +26,10 @@ export default function LoginForm() {
   const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
     setLoading(true);
     try {
-      await dispatch(loginUserAsync(data));
+      const result = await dispatch(loginUserAsync(data)).unwrap();
+      if (!user) return
+      if (user.role === 'driver') router.push('/driver/dashboard')
+      if (user.role === 'passenger') router.push('/dashboard')
     } catch (err) {
       console.error("Error occur while login", err);
     } finally {

@@ -1,5 +1,111 @@
+.container {
+  padding: 24px;
+  background: #fff;
+  border-radius: 20px;
+  margin-top: 2rem;
+}
 
-.container{
-    margin-top: 2rem;
-    padding :1rem
+.subtitle {
+  margin-top: 6px !important;
+  margin-bottom: 20px !important;
+  color: #777b80;
+  font-size: 14px;
+}
+
+.vehicleList {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.vehicleCard {
+  display: flex !important;
+  align-items: center;
+  gap: 10px !important;
+
+  min-width: 0;
+  padding: 14px 10px;
+
+  text-align: left;
+  color: #171918;
+  background: #fff;
+  border: 1px solid #e4e6e8;
+  border-radius: 13px;
+  cursor: pointer;
+
+  transition: border-color 150ms ease,
+              background-color 150ms ease;
+}
+
+.vehicleCard:hover {
+  border-color: #b8f34a;
+}
+
+.selected {
+  border: 1.5px solid #a6e92f;
+  background: #f8ffed;
+}
+
+.imageWrapper {
+  flex: 0 0 42%;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+}
+
+.vehicleImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.details {
+  flex: 1;
+  min-width: 0;
+  margin-left: 0.5rem;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.infoIcon {
+  font-size: 16px;
+  color: #777b80;
+}
+
+.description {
+  margin-top: 3px !important;
+  color: #777b80;
+  font-size: 12px !important;
+  line-height: 1.4;
+  width: 150px;
+}
+
+.price {
+  margin-top: 12px !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  width: 100px;
+}
+
+@media (max-width: 1100px) {
+  .vehicleList {
+    grid-template-columns: 1fr;
+  }
+
+  .vehicleCard {
+    min-height: 100px;
+  }
+
+  .imageWrapper {
+    flex-basis: 120px;
+  }
+
+  .vehicleImage {
+    max-height: 80px;
+  }
 }

@@ -23,14 +23,10 @@ export default function VehicleCard({vehicle} : Prop) {
             <Image className={styles.image} src={vehicle.image} alt="car image" />
           </Grid>
           <Grid>
-            <Typography>{vehicle.type}</Typography>
-            <Typography>people : {vehicle.people}</Typography>
-            <Typography>luggage : {vehicle.luggage}</Typography>
+            <Typography variant="subtitle1" sx={{fontWeight:'bold'}}>{vehicle.type}</Typography>
+            <Typography>{vehicle.line}</Typography>
+            <Typography>From: {vehicle.price}</Typography>
           </Grid>
-        </Grid>
-
-        <Grid>
-          <Typography variant="h3">INR {vehicle.price}</Typography>
         </Grid>
       </Grid>
     </Paper>

@@ -1,0 +1,164 @@
+.sidebar {
+  position: fixed;
+  z-index: 1200;
+
+  display: flex;
+  flex-direction: column;
+
+  width: 236px;
+  height: 100dvh;
+  padding: 28px 15px 20px;
+
+  box-sizing: border-box;
+  overflow-y: auto;
+
+  color: #ffffff;
+  background-color: #171918;
+}
+
+.logo {
+    width: 100%;
+    background-color: #ffffff;
+    padding: 0.2rem;
+    border-radius: 20px;
+}
+.image {
+    width :100%;
+    height : auto;
+}
+
+
+
+/* Brand */
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  padding: 0 14px;
+  margin-bottom: 40px;
+
+  color: inherit;
+  text-decoration: none;
+  margin-bottom: 1rem !important;
+}
+
+/* .logo {
+  display: grid;
+  place-items: center;
+
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+
+  color: #171918;
+  background-color: #b8f34a;
+  border-radius: 13px;
+} */
+/* 
+.logo svg {
+  font-size: 29px;
+} */
+
+.brandName {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.7px;
+}
+
+/* Navigation */
+
+.navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 1rem;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+
+  min-height: 51px;
+  padding: 0 18px;
+
+  box-sizing: border-box;
+  border-radius: 13px;
+
+  color: #d0d2d0;
+  font-size: 15px;
+  font-weight: 400;
+  text-decoration: none;
+
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
+}
+
+.navIcon {
+  flex-shrink: 0;
+  font-size: 24px;
+}
+
+.navItem:hover {
+  color: #ffffff;
+  background-color: #272a28;
+}
+
+.navItem.active {
+  color: #10120d;
+  background-color: #b8f34a;
+  font-weight: 600;
+}
+
+.navItem.active:hover {
+  background-color: #c5fa66;
+}
+
+/* Support stays at the bottom */
+
+.support {
+  margin-top: auto;
+  padding: 22px 10px 0;
+  border-top: 1px solid #353836;
+}
+
+.supportLink {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  padding: 4px 0;
+
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.supportLink:hover {
+  color: #b8f34a;
+}
+
+.supportText {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.supportSubtitle {
+  color: #a6aaa7;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+/* Keyboard accessibility */
+
+.navItem:focus-visible,
+.brand:focus-visible,
+.supportLink:focus-visible {
+  outline: 2px solid #b8f34a;
+  outline-offset: 3px;
+}
