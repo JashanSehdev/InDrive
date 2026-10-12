@@ -1,6 +1,5 @@
 import { Box, Stack, Typography } from "@mui/material";
 import RideRequestDashboard from "./ride-card/ride-request-card";
-import {  RideRequest } from "@/type/ride.type";
 import { toRideRequest } from "./ride-to-rideRequest";
 import { useDriverSocket } from "@/hooks/use-driver-socket";
 import { useEffect } from "react";
@@ -24,7 +23,12 @@ export default function DriverDashboard() {
   const onReject = (rideId: number): void => {
     setIncomingRides(incomingRides.filter((item) => item.id !== rideId))
   };
-  const OnCounterOffer = (ride: RideRequest): void => {
+  const OnCounterOffer = (offer: CreateOffer): void => {
+    try{
+      dispatch(createOfferAsync(offer))
+    } catch(error) {
+      console.error("error while creating offer",error)
+    }
   };
 
   
@@ -61,18 +65,5 @@ export default function DriverDashboard() {
         ))}
       </Stack>
     </Box>
-    // <Box>
-    //   {incomingRides?.map((ride) => {
-    //     const rideReuest = toRideRequest(ride)
-    //     return (
-    //     <RideRequestDashboard
-    //       key={ride.id}
-    //       onAccept={onAccept}
-    //       onReject={onReject}
-    //       onCounterOffer={OnCounterOffer}
-    //       ride={rideReuest}
-    //     />
-    //   )})}
-    // </Box>
   );
 }

@@ -26,7 +26,7 @@ export class Offer {
     @JoinColumn({name : 'driverId'})
     driver : Relation<User>
 
-    @ManyToOne(() => Ride, (ride) => ride.offers)
+    @ManyToOne(() => Ride, (ride) => ride.offers, {onDelete : 'CASCADE'})
     @JoinColumn({name : 'rideId'})
     Ride : Relation<Ride>
 

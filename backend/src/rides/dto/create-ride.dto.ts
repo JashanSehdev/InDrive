@@ -43,4 +43,8 @@ export class CreateRideDto {
   @Type(() => Number)
   @IsNumber()
   price : number
+ 
+  @IsOptional()
+  @IsNumber()
+  accepted_offer_id ?: number
 }

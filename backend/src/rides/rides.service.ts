@@ -4,7 +4,6 @@ import { UpdateRideDto } from './dto/update-ride.dto.js';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Ride } from './entities/ride.entity.js';
 import { Repository } from 'typeorm';
-import { NotFoundError } from 'rxjs';
 import { WebsocketGateway } from '../websocket/websocket.gateway.js';
 
 @Injectable()
@@ -15,35 +14,12 @@ export class RidesService {
     private readonly websocketGateway : WebsocketGateway
   ){}
   async create(createRideDto: CreateRideDto, passengerId : number) {
-    const ride = this.rideRepository.create({...createRideDto, passengerId});
+    const ride = this.rideRepository.create({...createRideDto, passengerId, accepted_offer:null});
     const newRide =  await  this.rideRepository.save(ride);
     const broadcastRide = await this.findOne(newRide.id)
     this.websocketGateway.broadcastNewRide(broadcastRide);
     return broadcastRide
   }
-
-//   async canAccessRide(
-//   rideId: number,
-//   userId: number,
-// ): Promise<boolean> {
-//   const ride = await this.rideRepository.findOne({
-//     where: { id: rideId },
-//     select: {
-//       id: true,
-//       passengerId: true,
-//       driverId: true,
-//     },
-//   });
-
-//   if (!ride) {
-//     return false;
-//   }
-
-//   return (
-//     Number(ride.passengerId) === userId ||
-//     Number(ride.driverId) === userId
-//   );
-// }
 
   async findAll() {
     return await this.rideRepository.find({
@@ -70,13 +46,25 @@ export class RidesService {
         id 
       },
       relations: {
-        passenger: true
+        passenger: true,
+        accepted_offer:{
+          driver:true
+        }
       },
 
       select : {
         passenger : {
           id : true,
-          username : true
+          username : true,
+          
+        },
+        accepted_offer:{
+          id:true,
+          price: true,
+          driver:{
+            id : true,
+            username : true
+          }
         }
       }
     })

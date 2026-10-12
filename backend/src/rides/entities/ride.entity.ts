@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn, type Relation } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn, type Relation } from "typeorm";
 import { Offer } from "../../offers/entities/offer.entity.js";
 import { User } from "../../users/entities/user.entity.js";
 
@@ -49,7 +49,14 @@ export class Ride {
     @Column ({type : 'enum', enum : Status, default : Status.PENDING})
     status : Status
 
-    @OneToMany(() => Offer, (offer) => offer.rideId)
+    @Column({type : 'integer', nullable : true})
+    accepted_offer_id ?: number
+
+    @OneToOne(() => Offer, {nullable : true})
+    @JoinColumn({name : 'accepted_offer_id'})
+    accepted_offer : Relation<Offer> | null
+
+    @OneToMany(() => Offer, (offer) => offer.rideId, {cascade : true})
     offers : Relation<Offer[]>
 
     @ManyToOne(() => User, (user) => user.rides)

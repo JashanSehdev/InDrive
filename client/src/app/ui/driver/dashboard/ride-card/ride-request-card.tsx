@@ -1,3 +1,4 @@
+'use client'
 import {
   Avatar,
   Box,
@@ -16,13 +17,16 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 import { RideRequest } from "@/type/ride.type";
 import { CreateOffer } from "@/features/offer/manage-offers/offer.type";
+import { useState } from "react";
+import CounterOfferModal from "./counter-offer-modal/counter-offer";
+import { enqueueSnackbar } from "notistack";
 
 
 
 type Props = {
   ride: RideRequest;
   onAccept: (offer: CreateOffer) => void;
-  onCounterOffer: (ride: RideRequest) => void;
+  onCounterOffer: (offer: CreateOffer) => void;
   onReject: (rideId: number) => void;
 };
 
@@ -32,11 +36,25 @@ export default function RideRequestDashboard({
   onCounterOffer,
   onReject,
 }: Props) {
+  const[counterOffer, setCounterOffer] = useState<number>(ride.price);
+  const [open, setOpen] = useState<boolean>(false);
+  const handleCounterOffer = () => {
+    onCounterOffer({ rideId : ride.id, price : counterOffer})
+    setOpen(false);
+    enqueueSnackbar({message: 'Counter offer sent', variant:'success'})
+  }
   return (
     <Card
-      // variant="outlined"
       className={styles.card}
     >
+      <CounterOfferModal
+        setOpen={setOpen}
+        setCounterOffer={setCounterOffer}
+        min={ride.price}
+        open={open}
+        counterOffer={counterOffer}
+        handleCounterOffer={handleCounterOffer}
+      />
       <Grid container spacing={2} sx={{ alignItems: "center" }}>
         <Grid size={{ xs: 12, md: 3 }}>
           <Stack direction="row" spacing={1.5} sx={{ alignItems: "center" }}>
@@ -148,7 +166,7 @@ export default function RideRequestDashboard({
                 fullWidth
                 variant="outlined"
                 startIcon={<EditOutlinedIcon />}
-                onClick={() => onCounterOffer(ride)}
+                onClick={() => setOpen(true)}
                 sx={{
                   color: "#111827",
                   borderColor: "#CBD5E1",
