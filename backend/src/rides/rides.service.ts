@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { CreateRideDto } from './dto/create-ride.dto.js';
 import { UpdateRideDto } from './dto/update-ride.dto.js';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -11,7 +11,7 @@ export class RidesService {
   constructor(
     @InjectRepository(Ride)
     private readonly rideRepository : Repository<Ride>,
-    private readonly websocketGateway : WebsocketGateway
+    private readonly websocketGateway : WebsocketGateway,
   ){}
   async create(createRideDto: CreateRideDto, passengerId : number) {
     const ride = this.rideRepository.create({...createRideDto, passengerId, accepted_offer:null});
@@ -72,10 +72,14 @@ export class RidesService {
 
   async update(id: number, updateRideDto: UpdateRideDto) {
     const ride = await this.findOne(id)
-
+    if (!ride) throw new UnauthorizedException({code : 'NOT_FOUND', message :'Ride not found'})
     const newRide = {...ride, ...updateRideDto}
 
     await this.rideRepository.update(id, newRide)
+    if (newRide?.status === 'accepted'){
+      this.websocketGateway.emitAcceptedOffer(newRide)
+    }
+    this.websocketGateway.emitRideStatusChange(newRide)
     return newRide;
   }
 

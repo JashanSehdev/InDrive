@@ -20,7 +20,8 @@ export enum Status {
     ACCEPTED = 'accepted',
     REJECTED = 'rejected',
     STARTED = 'started',
-    COMPLETED = 'completed'
+    COMPLETED = 'completed',
+    CANCELLED = 'cancelled'
 }
 
 @Entity('Ride')

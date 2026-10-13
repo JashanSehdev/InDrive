@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { fetchRide } from "@/features/ride/manage-ride/ride.action";
 import { enqueueSnackbar } from "notistack";
+import { usePassengerSocket } from "@/hooks/use-passenger-socket";
 
 export type RideLocation = {
   latitude: number;
@@ -21,13 +22,13 @@ export type Passenger = {
 };
 
 export type AcceptedOffer = {
-  id:number,
-  price : number,
+  id: number;
+  price: number;
   driver: {
-    id : number,
-    username : string
-  }
-}
+    id: number;
+    username: string;
+  };
+};
 
 export type AcceptedRide = {
   id: number;
@@ -42,72 +43,89 @@ export type AcceptedRide = {
   passengerId: number;
   price: number;
   status: "accepted";
-  accepted_offer : AcceptedOffer
+  accepted_offer: AcceptedOffer;
 };
 
 export default function LiveTracking({ rideId }: { rideId: number }) {
-  const [ride, setRide] = useState<AcceptedRide | null>(null)
+  const {ride, setRide} = usePassengerSocket()
+  console.log("current Ride", ride)
+  // const [ride, setRide] = useState<AcceptedRide | null>(null);
   const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
   const dispatch = useAppDispatch();
-  const router = useRouter();
   useEffect(() => {
     const getRide = async () => {
       try {
         const result = await dispatch(fetchRide(rideId)).unwrap();
-        console.log("Result", result)
-        setRide(result)
+        console.log("Result", result);
+        setRide(result);
       } catch (error) {
         console.error(error);
-        enqueueSnackbar({message:'Something went wrong', variant:'error'})
+        enqueueSnackbar({ message: "Something went wrong", variant: "error" });
         //router.push("/dashboard");
       }
     };
 
-    getRide()
+    getRide();
   }, []);
 
   return (
     <Box>
-        {
-            !ride ? <CircularProgress/> : 
-            <Grid container direction="row" size="grow">
-        <Grid size={9}>
-          <Map
-            mapboxAccessToken={mapboxToken}
-            mapStyle="mapbox://styles/mapbox/streets-v12"
-            style={{ width: "100%", height: 450 }}
-            initialViewState={{ latitude: ride.pickup.latitude, longitude:ride.pickup.longitude, zoom: 10 }}
-            maxZoom={20}
-            minZoom={3}
-          >
-            {Number.isFinite(ride.pickup?.latitude) && Number.isFinite(ride.pickup?.longitude) && (
-              <Marker
-                latitude={ride.pickup.latitude}
-                longitude={ride.pickup.longitude}
-                color="#16a34a"
-                anchor="bottom"
-              />
-            )}
+      {!ride ? (
+        <CircularProgress />
+      ) : (
+        <Grid
+  container
+  sx={{
+    flexDirection: {
+      xs: "column",
+      sm: "column",
+      md: "column",
+      lg: 'row'
+    },
+  }}
+  spacing={2}
+>
+          <Grid size={{ xs: 12, md: 8, lg: 9 }}>
+            <Map
+              mapboxAccessToken={mapboxToken}
+              mapStyle="mapbox://styles/mapbox/streets-v12"
+              style={{ width: "100%", height: 450 }}
+              initialViewState={{
+                latitude: ride.pickup.latitude,
+                longitude: ride.pickup.longitude,
+                zoom: 10,
+              }}
+              maxZoom={20}
+              minZoom={3}
+            >
+              {Number.isFinite(ride.pickup?.latitude) &&
+                Number.isFinite(ride.pickup?.longitude) && (
+                  <Marker
+                    latitude={ride.pickup.latitude}
+                    longitude={ride.pickup.longitude}
+                    color="#16a34a"
+                    anchor="bottom"
+                  />
+                )}
 
-            {Number.isFinite(ride.drop?.latitude) && Number.isFinite(ride.drop?.longitude) && (
-              <Marker
-                latitude={ride.drop.latitude}
-                longitude={ride.drop.longitude}
-                color="#dc2626"
-                anchor="bottom"
-              />
-            )}
-            <GeolocateControl position="top-right" />
-            <NavigationControl position="top-right" />
-          </Map>
-        </Grid>
+              {Number.isFinite(ride.drop?.latitude) && Number.isFinite(ride.drop?.longitude) && (
+                <Marker
+                  latitude={ride.drop.latitude}
+                  longitude={ride.drop.longitude}
+                  color="#dc2626"
+                  anchor="bottom"
+                />
+              )}
+              <GeolocateControl position="top-right" />
+              <NavigationControl position="top-right" />
+            </Map>
+          </Grid>
 
-        <Grid size={3}>
-          <Details ride={ride}/>
+          <Grid size={{sm: 'grow',md: '4', lg:'3'}}>
+            <Details ride={ride} />
+          </Grid>
         </Grid>
-      </Grid>
-        }
-      
+      )}
     </Box>
   );
 }

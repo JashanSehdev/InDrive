@@ -1,3 +1,5 @@
+import { AcceptedOffer } from "@/app/ui/live-tracking-dashboard/live-dashboard";
+
 export type RideLocation = {
   latitude: number;
   longitude: number;
@@ -12,10 +14,11 @@ export type Ride = {
   drop: RideLocation;
   price: number;
   cab_type: "economy" | "premium" | "luxury";
-  status: "pending" | "accepted" | "completed" | "cancelled";
+  status: "pending" | "accepted" | "completed" | "cancelled" | 'started' | 'rejected';
   passenger: Passenger;
   createdAt: string;
   updatedAt: string;
+  accepted_offer :AcceptedOffer
 };
 
 export type RideRequest = {

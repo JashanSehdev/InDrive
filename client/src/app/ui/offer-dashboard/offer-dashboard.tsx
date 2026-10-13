@@ -2,29 +2,7 @@
 import { fetchOfferAsync } from "@/features/offer/manage-offers/offer.action";
 import { useAppDispatch } from "@/features/store";
 import { Box, Container, Skeleton, Stack } from "@mui/material";
-// import { useEffect } from "react";
 
-// export default function OfferDashboard({rideId} : {rideId : number}) {
-// const dispatch = useAppDispatch()
-// useEffect(() => {
-//     const getOffers = async() => {
-//         try{
-//             const result = await dispatch(fetchOfferAsync(rideId)).unwrap()
-//             console.log(result)
-//         } catch (error) {
-//             console.error(error)
-//         }
-
-//     }
-
-//     getOffers()
-// },[dispatch, rideId])
-//     return (
-//         <Box>
-
-//         </Box>
-//     )
-// }
 
 import { useEffect } from "react";
 import { useOffers } from "@/hooks/use-offer";
@@ -54,7 +32,13 @@ export default function OfferDashboard({ rideId }: { rideId: number }) {
   const handleAccept = async (offer: Offer) => {
     try {
       const result: Ride | null = await dispatch(
-        acceptRideAsync({ accepted_offer_id: offer.id, rideId: offer.rideId, offerId: offer.id }),
+        acceptRideAsync({ 
+          accepted_offer_id: offer.id, 
+          rideId: offer.rideId, 
+          offerId: offer.id, 
+          driverId: offer.driverId,
+          status : 'accepted'
+        }),
       ).unwrap()
       route.push(`/dashboard/ride/${result?.id}/live`);
     } catch (error) {

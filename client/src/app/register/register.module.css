@@ -1,0 +1,14 @@
+.container {
+  background-image: url('https://static.vecteezy.com/system/resources/thumbnails/077/155/632/small/elevate-your-desktop-with-a-stunning-4k-wallpaper-featuring-a-dramatic-landscape-at-dusk-with-vibrant-colors-and-smooth-gradients-free-photo.jpg') !important;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  backdrop-filter: 'blur(10px)';
+  width: 100%;
+  min-width: 400px;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}

@@ -9,6 +9,7 @@ import PinDropOutlinedIcon from "@mui/icons-material/PinDropOutlined";
 import ShieldOutlinedIcon from "@mui/icons-material/ShieldOutlined";
 import FmdGoodOutlinedIcon from "@mui/icons-material/FmdGoodOutlined";
 import { AcceptedRide } from "../live-dashboard";
+import { Ride } from "@/type/ride.type";
 
 const cab_options = [
   {
@@ -29,30 +30,79 @@ const cab_options = [
   },
 ];
 
-const driver_image = 'https://img.magnific.com/free-photo/portrait-white-man-isolated_53876-40306.jpg?semt=ais_hybrid&w=740&q=80'
-export default function Details({ride} : {ride: AcceptedRide}) {
+const driver_image =
+  "https://img.magnific.com/free-photo/portrait-white-man-isolated_53876-40306.jpg?semt=ais_hybrid&w=740&q=80";
+export default function Details({ ride }: { ride: Ride }) {
   return (
-    <Stack spacing={6} className={styles.container}>
-
-
+    <Stack spacing={3} className={styles.container}>
       <Stack>
-        <Stack spacing={0}>
-          <Typography variant="h4">DRIVER ARRIVES IN</Typography>
-          <Stack direction="row" sx={{ alignItems: "baseline" }} spacing={1}>
-            <Typography variant="h3" color="primary">
-              5 min
-            </Typography>
-            <Typography color={"textSecondary"} sx={{ fontWeight: 500, color: "" }}>
-              2.1km away
-            </Typography>
+        {ride.status === "accepted" && (
+          <Stack spacing={0}>
+            <Typography variant="h4">DRIVER ARRIVES IN</Typography>
+            <Stack direction="row" sx={{ alignItems: "baseline" }} spacing={1}>
+              <Typography variant="h3" color="primary">
+                5 min
+              </Typography>
+              <Typography color={"textSecondary"} sx={{ fontWeight: 500, color: "" }}>
+                2.1km away
+              </Typography>
+            </Stack>
           </Stack>
-        </Stack>
+        )}
+
+        {
+          ride.status === 'started' && (
+            <Stack spacing={0}>
+            <Typography variant="h4">Ride has been Started</Typography>
+            <Stack direction="row" sx={{ alignItems: "baseline" }} spacing={1}>
+              <Typography variant="h3" color="primary">
+                20 min
+              </Typography>
+              <Typography color={"textSecondary"} sx={{ fontWeight: 500, color: "" }}>
+                to your destination
+              </Typography>
+            </Stack>
+          </Stack>
+          )
+        }
+
+        {
+          ride.status === 'completed' && (
+            <Stack spacing={0}>
+            <Typography variant="h4">Ride has been Completed</Typography>
+            <Stack direction="row" sx={{ alignItems: "baseline" }} spacing={1}>
+              <Typography variant="h3" color="primary">
+                Pay
+              </Typography>
+              <Typography color={"textSecondary"} sx={{ fontWeight: 500, color: "" }}>
+                To The Driver
+              </Typography>
+            </Stack>
+          </Stack>
+          )
+        }
+
+        {
+          ride.status === 'rejected' && (
+            <Stack spacing={0}>
+            <Typography variant="h4">Ride has been Cancelled</Typography>
+            <Stack direction="row" sx={{ alignItems: "baseline" }} spacing={1}>
+              <Typography variant="h3" color="error">
+                Sorry
+              </Typography>
+              <Typography color={"textSecondary"} sx={{ fontWeight: 500, color: "" }}>
+                For this inconvenience
+              </Typography>
+            </Stack>
+          </Stack>
+          )
+        }
       </Stack>
 
       <Paper elevation={1} sx={{ p: "1rem", width: "fit-content" }}>
         {/* Driver details */}
         <Stack direction="row" spacing={1.5}>
-          <Avatar sx={{ width: 56, height: 56 }} src={driver_image}/>
+          <Avatar sx={{ width: 56, height: 56 }} src={driver_image} />
           <Stack direction="column">
             <Typography>{ride.accepted_offer.driver.username}</Typography>
             <Stack direction="row" sx={{ alignItems: "center" }} spacing={0.5}>
@@ -88,7 +138,7 @@ export default function Details({ride} : {ride: AcceptedRide}) {
         </Stack>
       </Paper>
 
-      <Stack spacing={1} sx={{mt:4}}>
+      <Stack spacing={1} sx={{ mt: 4 }}>
         <Stack direction="row" spacing={3} sx={{ alignItems: "center" }}>
           <FmdGoodOutlinedIcon sx={{ color: "green" }} />
           <Stack spacing={-0.5}>
@@ -118,12 +168,26 @@ export default function Details({ride} : {ride: AcceptedRide}) {
         </Stack>
       </Stack>
 
-      <Stack direction={'row'} sx={{justifyContent:'space-between'}}>
-          <Typography variant="body1" sx={{fontWeight: 700}}>You agreed Fair</Typography><Typography variant="h5">{ride.accepted_offer.price}</Typography>
+      <Stack direction={"row"} sx={{ justifyContent: "space-between" }}>
+        <Typography variant="body1" sx={{ fontWeight: 700 }}>
+          You agreed Fair
+        </Typography>
+        <Typography variant="h5">{ride.accepted_offer.price}</Typography>
       </Stack>
-      <Button variant="contained" color="error">
-        Cancel Ride
-      </Button>
+      {/* Cancel Ride Button */}
+      {ride.status === "completed" && (
+        <Box>
+          <Typography>Your Ride has Been Completed</Typography>
+        </Box>
+      )}
+      {ride.status === "accepted" ||
+        (ride.status === "started" && (
+          <Button variant="contained" color="error">
+            Cancel Ride
+          </Button>
+        ))}
+
+      {ride.status === "rejected" && <Box>Ride had been Cancelled</Box>}
     </Stack>
   );
 }

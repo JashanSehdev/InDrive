@@ -8,82 +8,33 @@ import LoginForm from "../ui/login/login-page";
 import { Box } from "@mui/material";
 import { useRouter } from "next/navigation";
 
-
+const imageUrl = 'https://images.pexels.com/photos/29586678/pexels-photo-29586678.jpeg?cs=srgb&dl=pexels-steve-29586678.jpg&fm=jpg'
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // const createSession = async (idToken: string) => {
-  //   const res = await fetch("/api/session", {
-  //     method: "POST",
-  //     headers: {
-  //       Authorization: `Bearer ${idToken}`,
-  //     },
-  //   });
 
-  //   if (!res.ok) {
-  //     throw new Error("Failed to create session");
-  //   }
-  // };
-
-  // const handleGoogleLogin = async () => {
-  //   try {
-  //     setLoading(true);
-
-  //     const provider = new GoogleAuthProvider();
-  //     const result = await signInWithPopup(auth, provider);
-  //     const idToken = await result.user.getIdToken();
-
-  //     await createSession(idToken);
-
-  //     enqueueSnackbar({message: 'login success', variant:'success'})
-
-  //     router.push("/dashboard");
-  //     router.refresh();
-  //   } catch (error: any) {
-  //     console.error(error);
-  //     toast.error(error.message || "Login failed");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-  // const handleEmailLogin = async () => {
-  //   try {
-  //     setLoading(true);
-
-  //     const result = await signInWithEmailAndPassword(auth, email, password);
-
-  //     const idToken = await result.user.getIdToken();
-  //     await createSession(idToken);
-
-  //     enqueueSnackbar({message: 'login success', variant:'success'})
-
-  //     router.push("/dashboard");
-  //     router.refresh();
-  //   } catch (error: any) {
-  //     console.error(error);
-
-  //     let message = "Login failed";
-
-  //     if (error.code === "auth/user-not-found") {
-  //       message = "User not found";
-  //     } else if (error.code === "auth/wrong-password") {
-  //       message = "wrong password";
-  //     } else if (error.code === "auth/invalid-email") {
-  //       message = "invalid email format";
-  //     }
-
-  //     enqueueSnackbar(message, {variant: error})
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   return (
-    <Box>
+    <Box
+    
+    sx={{
+
+        backgroundImage: `url(${imageUrl})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        
+        width: '100%',
+        minHeight: '400px',
+        height: '100dvh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: 'white',
+      }}>
       <LoginForm/>
     </Box>
   )

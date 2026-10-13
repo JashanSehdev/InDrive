@@ -1,5 +1,5 @@
 "use client";
-import { Box, Button, FormControl, FormControlLabel, FormLabel, Paper, Radio, RadioGroup, TextField, Typography } from "@mui/material";
+import { Button, FormControl, FormControlLabel, FormLabel, Paper, Radio, RadioGroup, TextField, Typography } from "@mui/material";
 import styles from "./signUp-page.module.css";
 import Link from "next/link";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -8,9 +8,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useAppDispatch } from "@/features/store";
 import { useState } from "react";
 import { registerUserAsync } from "@/features/auth/manage-auth/auth.action";
+import { useRouter } from "next/navigation";
 
 export default function SignUpForm() {
   const [loading, setLoading] = useState<boolean>(false)
+  const router = useRouter()
   const dispatch = useAppDispatch();
   const {
     register,
@@ -28,7 +30,13 @@ export default function SignUpForm() {
     setLoading(true);
     try {
       const { confirmPassword, ...registerData } = data
-      await dispatch(registerUserAsync(registerData))
+      await dispatch(registerUserAsync(registerData));
+      if (data.role ==='driver') {
+        router.push('/driver/dashboard')
+      } else {
+        router.push('/dashboard')
+      }
+      
     } catch(error) {
       console.error("Error occur while register", error)
     } finally {

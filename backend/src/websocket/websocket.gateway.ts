@@ -14,6 +14,7 @@ import { Server, Socket } from 'socket.io';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Ride } from '../rides/entities/ride.entity.js';
+import { Offer } from '../offers/entities/offer.entity.js';
 
 @WebSocketGateway({
   cors: {
@@ -92,7 +93,17 @@ export class WebsocketGateway
 
   broadcastNewRide(ride: unknown) {
     this.server.to('drivers').emit(`ride:created`, ride);
-    console.log("new ride message emmited")
+    console.log("new ride message emited")
+  }
+
+  emitAcceptedOffer(ride: Ride) {
+    this.server.to(`user:${ride.driverId}`).emit(`ride:accepted`, ride)
+    console.log("accept offer emitted")
+  }
+
+  emitRideStatusChange(ride : Ride) {
+    this.server.to(`user:${ride.passengerId}`).emit(`ride:status_change`, ride)
+    console.log("RIDE:STATUS_CHANGE EMIT")
   }
 
   emitOffersToPassenger(offer : unknown, passengerId : number) {

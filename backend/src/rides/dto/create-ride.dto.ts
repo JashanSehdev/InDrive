@@ -47,4 +47,8 @@ export class CreateRideDto {
   @IsOptional()
   @IsNumber()
   accepted_offer_id ?: number
+
+  @IsOptional()
+  @IsNumber()
+  driverId ?: number
 }

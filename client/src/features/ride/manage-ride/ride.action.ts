@@ -40,7 +40,7 @@ export const acceptRideAsync = createAsyncThunk(
     'ride/create',
     async(data : AcceptRideType, thunkApi) => {
         try {
-            const response = await api.patch(`/rides/${data.rideId}`, {status: 'accepted',accepted_offer_id : data.offerId});
+            const response = await api.patch(`/rides/${data.rideId}`, {status: 'accepted',accepted_offer_id : data.offerId, driverId : data.driverId});
 
             return response.data
  
@@ -57,6 +57,54 @@ export const fetchRide = createAsyncThunk(
     async(id : number, thunkApi) => {
         try {
             const response = await api.get(`/rides/${id}`);
+
+            return response.data
+ 
+        } catch(error: any) {
+            return thunkApi.rejectWithValue(
+                error?.response?.data || 'something went wrong'
+            )
+        }
+    }
+)
+
+export const cancelRideAsync = createAsyncThunk(
+    'ride/cancel',
+    async(rideId : number, thunkApi) => {
+        try {
+            const response = await api.patch(`/rides/${rideId}`, {status: 'rejected'});
+
+            return response.data
+ 
+        } catch(error: any) {
+            return thunkApi.rejectWithValue(
+                error?.response?.data || 'something went wrong'
+            )
+        }
+    }
+)
+
+export const startRideAsync = createAsyncThunk(
+    'ride/start',
+    async(rideId : number, thunkApi) => {
+        try {
+            const response = await api.patch(`/rides/${rideId}`, {status: 'started'});
+
+            return response.data
+ 
+        } catch(error: any) {
+            return thunkApi.rejectWithValue(
+                error?.response?.data || 'something went wrong'
+            )
+        }
+    }
+)
+
+export const completeRideAsync = createAsyncThunk(
+    'ride/complete',
+    async(rideId : number, thunkApi) => {
+        try {
+            const response = await api.patch(`/rides/${rideId}`, {status: 'completed'});
 
             return response.data
  
